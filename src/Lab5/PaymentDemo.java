@@ -5,30 +5,33 @@ class Payment {
     private final double amount;
     Payment(double amount) { this.amount = amount; }
     double getAmount() { return amount; }
+
+    void process() {                              // default behaviour
+        System.out.println("Generic payment of " + amount);
+    }
 }
 
 class CardPayment extends Payment {
     private final String holder;
     CardPayment(double amount, String holder) { super(amount); this.holder = holder; }
-    String getHolder() { return holder; }
+
+    @Override void process() {
+        System.out.println("Card payment of " + getAmount() + " for " + holder);
+    }
 }
 
 class MobileMoneyPayment extends Payment {
     private final String phone;
     MobileMoneyPayment(double amount, String phone) { super(amount); this.phone = phone; }
-    String getPhone() { return phone; }
+
+    @Override void process() {
+        System.out.println("Mobile money payment of " + getAmount() + " from " + phone);
+    }
 }
 
 class PaymentProcessor {
     void pay(Payment p) {
-        // EXPLAIN: pattern matching -> tests the type AND casts in one step
-        if (p instanceof CardPayment c) {
-            System.out.println("Card payment of " + p.getAmount() + " for " + c.getHolder());
-        } else if (p instanceof MobileMoneyPayment m) {
-            System.out.println("Mobile money payment of " + p.getAmount() + " from " + m.getPhone());
-        } else {
-            System.out.println("Unknown payment type");
-        }
+        p.process();   // EXPLAIN: no instanceof needed, each object knows how to process itself
     }
 }
 
@@ -40,3 +43,10 @@ public class PaymentDemo {
         proc.pay(new Payment(5.0));
     }
 }
+
+/*
+Comparing the two designs
+- Design A: every time you add a new payment type, such as bank transfer, you must go back and edit pay(). If you forget, the new type silently falls into "Unknown payment type".
+- Design B: you add a new class that overrides process(), and PaymentProcessor never changes. This is the "open for extension, closed for modification" idea from the objectives.
+- When A is still fine: if you cannot edit the payment classes (they belong to someone else), instanceof is the only option.
+*/
