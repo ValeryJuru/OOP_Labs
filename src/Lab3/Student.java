@@ -20,10 +20,16 @@ public class Student {
         this.marks = marks;
         return true;
     }
+    public String getGrade() {
+        if (marks >= 70) return "A";
+        if (marks >= 60) return "B";
+        if (marks >= 50) return "C";
+        return "F";
+    }
 
     public static void main(String[] args) {
         Student s = new Student("Valery", 85);
-        System.out.println(s.getName() + " " + s.getMarks());
+        System.out.println(s.getName() + " " + s.getMarks() + " " + s.getGrade());
         System.out.println("Set 150: " + s.setMarks(150));
         System.out.println("Marks still: " + s.getMarks());
     }
