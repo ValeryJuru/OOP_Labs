@@ -12,11 +12,16 @@ public class Car {
     void display(){
         System.out.println("Brand: " + brand + ", Year: " + year + ", Mileage: " + mileage + " km");
     }
+    // EXPLAIN: returns true when this car's age is more than 25 years
+    boolean isAntique() {
+        int currentYear = java.time.Year.now().getValue();
+        return currentYear - year > 25;
+    }
     public static void main(String[] args) {
         // EXPLAIN: three separate objects, each with its own values
         Car c1 = new Car();
         c1.brand = "Toyota";
-        c1.year = 2018;
+        c1.year = 1990;
         c1.mileage = 85000;
 
         Car c2 = new Car();
@@ -32,5 +37,9 @@ public class Car {
         c1.display();
         c2.display();
         c3.display();
+
+        System.out.println(c1.brand + " antique? " + c1.isAntique());
+        System.out.println(c2.brand + " antique? " + c2.isAntique());
+        System.out.println(c3.brand + " antique? " + c3.isAntique());
     }
 }
